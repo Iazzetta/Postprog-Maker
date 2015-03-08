@@ -4,7 +4,6 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.nio.charset.Charset;
 
 public class Controller implements ActionListener {
     
@@ -23,7 +22,7 @@ public class Controller implements ActionListener {
         switch(e.getActionCommand()){
             case "clear": clearTextFields();
                 break;
-            case "new": toClipboard();
+            case "copy": toClipboard();
                 break;
         }
     }
@@ -43,8 +42,10 @@ public class Controller implements ActionListener {
             window.getTxtScan().getText(),
             window.getTxtCreditos().getText()
         );
+        System.out.println("oi");
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
-            null,
-            new StringSelection(topic));
+            new StringSelection(topic),
+            null
+        );
     }
 }
