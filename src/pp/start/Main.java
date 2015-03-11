@@ -1,11 +1,13 @@
-package pgm.start;
+package pp.start;
 
 import java.awt.EventQueue;
+import pp.controller.MainWindowController;
+import pp.views.MainWindow;
 
 public class Main {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            new Controller(new Window());
+            new MainWindowController(new MainWindow());
         });
     }
 }
