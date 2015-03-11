@@ -26,7 +26,7 @@ public class MainWindowController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch(e.getActionCommand()){
             case "github":  openInBrowser("https://github.com/Iazzetta/Postprog-Maker"); break;
-            case "forum": openInBrowser(""); break;
+            case "forum": openInBrowser("http://www.webcheats.com.br/forum/programacao-zone/"); break;
             case "exit": System.exit(0); break;
             case "clear": clearAll(); break;
             case "build":
