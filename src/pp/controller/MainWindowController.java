@@ -3,10 +3,12 @@ package pp.controller;
 import java.awt.*;
 import java.net.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.awt.datatransfer.StringSelection;
+
 import java.io.IOException;
-import java.util.ArrayList;
+
 import pp.views.MainWindow;
 import pp.models.Format;
 
@@ -16,9 +18,11 @@ public class MainWindowController implements ActionListener {
 
     public MainWindowController(MainWindow window) {
         this.window = window;
-        window.getWindowButtons().stream().forEach((button) -> {
+        
+        window.getWindowButtons().forEach(button -> {
             button.addActionListener(this);
         });
+
         window.setVisible(true);
     }
 
@@ -26,11 +30,11 @@ public class MainWindowController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch(e.getActionCommand()){
             case "github":  openInBrowser("https://github.com/Iazzetta/Postprog-Maker"); break;
-            case "forum": openInBrowser("http://www.webcheats.com.br/forum/programacao-zone/"); break;
+            case "forum": openInBrowser("http://www.webcheats.com.br/categories/programa%C3%A7%C3%A3o-zone.60/"); break;
             case "exit": System.exit(0); break;
             case "clear": clearAll(); break;
             case "build":
-                if(!beforeCopy())
+                if(hasNullOrEmptyFields())
                     JOptionPane.showMessageDialog(window, "Preencha todos os campos antes de continuar.");
                 else {
                     toClipboard();
@@ -40,44 +44,36 @@ public class MainWindowController implements ActionListener {
         }
     } 
     
-    private void clearAll(){
-        ArrayList<JTextField> tflist = (ArrayList<JTextField>) window.getTextField(null);
-        tflist.stream().forEach((element) -> {
-            element.setText("");
+    private void clearAll(){ 
+        window.getAllTextFields().forEach(textfield -> {
+            textfield.setText("");
         });
-        ArrayList<JTextArea> talist = (ArrayList<JTextArea>) window.getTextArea(null);
-        talist.stream().forEach((element) -> {
-            element.setText("");
+        
+        window.getAllTextAreas().forEach(textarea -> {
+            textarea.setText("");
         });
     }
     
-    private boolean beforeCopy(){
-        boolean flag = true;
-        ArrayList<JTextField> tflist = (ArrayList<JTextField>) window.getTextField(null);
-        for(JTextField element:tflist){
-            String content = element.getText();
-            if(content == null || content.isEmpty())
-                flag = false;
-        }
-        if(!flag){
-            ArrayList<JTextArea> talist = (ArrayList<JTextArea>) window.getTextArea(null);
-            for(JTextArea element:talist){
-                String content = element.getText();
-                if(content == null || content.isEmpty())
-                    flag = false;
-            }
-        }
-        return flag;
+    private boolean hasNullOrEmptyFields(){
+        boolean hasEmptyOrNull = window.getAllTextFields().stream()
+                                       .anyMatch(tf -> tf.getText() == null || tf.getText().isEmpty());
+        
+        if(!hasEmptyOrNull)
+            window.getAllTextAreas().stream()
+                  .anyMatch(ta -> ta.getText() == null || ta.getText().isEmpty());
+        
+        
+        return hasEmptyOrNull;
     }
     
     private void toClipboard(){
         String topic = Format.instance().format(
-            (String) window.getTextField("title"),
-            (String) window.getTextArea("description"),
-            (String) window.getTextArea("source"),
-            (String) window.getTextField("download"),
-            (String) window.getTextField("scan"),
-            (String) window.getTextField("author")
+            window.getTextFieldContent("title"),
+            window.getTextAreaContent("description"),
+            window.getTextAreaContent("source"),
+            window.getTextFieldContent("download"),
+            window.getTextFieldContent("scan"),
+            window.getTextFieldContent("author")
         );
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
             new StringSelection(topic),

@@ -1,20 +1,26 @@
 package pp.views;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class MainWindow extends javax.swing.JFrame {
 
     public MainWindow() { 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {}
+        } catch (Exception err){}
         
         initComponents();
+        initializeSettings();
+    }
+    
+    private void initializeSettings(){
         setLocationRelativeTo(null);
     }
     
@@ -310,47 +316,40 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public ArrayList<JButton> getWindowButtons(){
-        ArrayList<JButton> list = new ArrayList<>();
-        list.add(btnBuild);
-        list.add(btnClear);
-        list.add(btnExit);
-        list.add(btnGithub);
-        list.add(btnProgrammingArea);
-        return list;
+    public final List<JButton> getWindowButtons(){
+        List<JButton> buttons = Arrays.asList(btnBuild, btnClear, btnExit, btnGithub, btnProgrammingArea);
+        return Collections.unmodifiableList(buttons);
     }
     
-    public Object getTextField(String component){
-        if(component == null){
-            ArrayList<JTextField> list = new ArrayList<>();
-            list.add(textTitle);
-            list.add(textAuthor);
-            list.add(textDownload);
-            list.add(textScan);
-            return list;
-        } else {
-            switch(component){
-                case "title": return textTitle.getText();
-                case "author": return textAuthor.getText();
-                case "download": return textDownload.getText();
-                case "scan": return textScan.getText();
-                default: return null;
-            }
-        }
+    public final List<JTextField> getAllTextFields(){
+        List<JTextField> textFields = Arrays.asList(textTitle, textAuthor, textDownload, textScan);
+        return Collections.unmodifiableList(textFields);
     }
     
-    public Object getTextArea(String component){
-        if(component == null){
-            ArrayList<JTextArea> list = new ArrayList<>();
-            list.add(textSource);
-            list.add(textDescription);
-            return list;
-        } else {
-            if(component.equals("source"))
-                return textSource.getText();
-            else return textDescription.getText();
-        }
+    public final List<JTextArea> getAllTextAreas(){
+        List<JTextArea> textAreas = Arrays.asList(textSource, textDescription);
+        return Collections.unmodifiableList(textAreas);
     }
+
+    
+    public String getTextFieldContent(String component){
+        String contents;
+        switch(component){
+            case "title":       contents = textTitle.getText();     break;
+            case "author":      contents = textAuthor.getText();    break;
+            case "download":    contents = textDownload.getText();  break;
+            case "scan":        contents = textScan.getText();      break;
+            default: contents = null; break;
+        }
+        return contents;
+    }
+    
+    public String getTextAreaContent(String component){
+        return component.equals("source") ?
+               textSource.getText()       :
+               textDescription.getText()  ;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuild;
     private javax.swing.JButton btnClear;
