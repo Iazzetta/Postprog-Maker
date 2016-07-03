@@ -59,8 +59,8 @@ public class MainWindowController implements ActionListener {
                                        .anyMatch(tf -> tf.getText() == null || tf.getText().isEmpty());
         
         if(!hasEmptyOrNull)
-            window.getAllTextAreas().stream()
-                  .anyMatch(ta -> ta.getText() == null || ta.getText().isEmpty());
+            hasEmptyOrNull = window.getAllTextAreas().stream()
+                                   .anyMatch(ta -> ta.getText() == null || ta.getText().isEmpty());
         
         
         return hasEmptyOrNull;
